@@ -1,0 +1,7 @@
+[
+  { "id": "id-1", "text": "html", "completed": true },
+  { "id": "id-2", "text": "css", "completed": true },
+  { "id": "id-3", "text": "java script", "completed": true },
+  { "id": "id-4", "text": "react", "completed": false },
+  { "id": "id-5", "text": "node", "completed": false }
+]
