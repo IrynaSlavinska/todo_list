@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import shortid from 'shortid';
-import initialTodos from '../todos.json';
+// import initialTodos from '../todos.json';
 import { TodoList } from './TodoList';
 import { TodoCreator } from './TodoCreator';
 import { Filter } from './Filter';
@@ -11,9 +11,26 @@ import { Filter } from './Filter';
 
 export class App extends Component {
   state = {
-    todos: initialTodos,
+    // todos: initialTodos,
+    todos: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const todos = localStorage.getItem('todos');
+    const parsedTodos = JSON.parse(todos);
+
+    if (parsedTodos) {
+      this.setState({ todos: parsedTodos });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.todos !== prevState.todos) {
+      localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    }
+    console.log(this.state.todos);
+  }
 
   addTodo = text => {
     const todo = { id: shortid.generate(), text, completed: false };
