@@ -1,7 +1,9 @@
+import { Button } from './IconButton.styled';
+
 export const IconButton = ({ children, onClick, ...allyProps }) => {
   return (
-    <button onClick={onClick} type="button" {...allyProps}>
+    <Button onClick={onClick} type="button" {...allyProps}>
       {children}
-    </button>
+    </Button>
   );
 };
