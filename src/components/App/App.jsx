@@ -1,15 +1,19 @@
 import { Component } from 'react';
 import shortid from 'shortid';
-import { TodoList } from './TodoList';
-import { TodoCreator } from './TodoCreator';
-import { Filter } from './Filter';
-import { IconButton } from './IconButton';
-import { ReactComponent as AddIcon } from '../icons/add.svg';
+import { TodoList } from 'components/TodoList';
+import { TodoCreator } from 'components/TodoCreator';
+import { Filter } from 'components/Filter';
+import { Modal } from 'components/Modal';
+import { IconButton } from 'components/IconButton';
+import { ReactComponent as AddIcon } from 'icons/add.svg';
+import { ReactComponent as CloseIcon } from 'icons/close.svg';
+import { Container, Title, InfoContainer } from './App.styled';
 
 export class App extends Component {
   state = {
     todos: [],
     filter: '',
+    showModal: false,
   };
 
   componentDidMount() {
@@ -26,6 +30,12 @@ export class App extends Component {
       localStorage.setItem('todos', JSON.stringify(this.state.todos));
     }
   }
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
 
   addTodo = text => {
     const todo = { id: shortid.generate(), text, completed: false };
@@ -77,33 +87,45 @@ export class App extends Component {
   };
 
   render() {
-    const { todos, filter } = this.state;
-
+    const { todos, filter, showModal } = this.state;
     const totalTodoCount = todos.length;
     const completedTodosCount = this.getCompletedTodosCount();
-
     const visibleTodos = this.getVisibleTodos();
 
     return (
-      <div>
-        <IconButton>
+      <Container>
+        <Title>Plan your time</Title>
+
+        <InfoContainer>
+          <p>
+            General count of todos: <span>{totalTodoCount}</span>
+          </p>
+          <p>
+            Count of completed todos: <span>{completedTodosCount}</span>
+          </p>
+        </InfoContainer>
+
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <IconButton onClick={this.toggleModal}>
+              <CloseIcon style={{ width: 40, height: 40, fill: 'green' }} />
+            </IconButton>
+            <TodoCreator onSubmit={this.addTodo} />
+          </Modal>
+        )}
+
+        <Filter filter={filter} changeFilter={this.changeFilter} />
+
+        <IconButton onClick={this.toggleModal}>
           <AddIcon style={{ width: 40, height: 40, fill: 'green' }} />
         </IconButton>
 
-        <TodoCreator onSubmit={this.addTodo} />
-        <div>
-          <p>General count of todos: {totalTodoCount}</p>
-          <p>Count of completed todos: {completedTodosCount}</p>
-        </div>
-        <Filter filter={filter} changeFilter={this.changeFilter} />
-
         <TodoList
           todos={visibleTodos}
-          // todos={todos}
           onDeleteTodo={this.deleteTodo}
           onToggleCompleted={this.toggleCompleted}
         />
-      </div>
+      </Container>
     );
   }
 }
