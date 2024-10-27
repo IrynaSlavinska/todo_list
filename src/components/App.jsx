@@ -1,17 +1,13 @@
 import { Component } from 'react';
 import shortid from 'shortid';
-// import initialTodos from '../todos.json';
 import { TodoList } from './TodoList';
 import { TodoCreator } from './TodoCreator';
 import { Filter } from './Filter';
-
-// export const App = () => {
-//   return <TodoList />;
-// };
+import { IconButton } from './IconButton';
+import { ReactComponent as AddIcon } from '../icons/add.svg';
 
 export class App extends Component {
   state = {
-    // todos: initialTodos,
     todos: [],
     filter: '',
   };
@@ -29,7 +25,6 @@ export class App extends Component {
     if (this.state.todos !== prevState.todos) {
       localStorage.setItem('todos', JSON.stringify(this.state.todos));
     }
-    console.log(this.state.todos);
   }
 
   addTodo = text => {
@@ -85,13 +80,16 @@ export class App extends Component {
     const { todos, filter } = this.state;
 
     const totalTodoCount = todos.length;
-    // const completedTodos = todos.filter(todo => todo.completed);
     const completedTodosCount = this.getCompletedTodosCount();
 
     const visibleTodos = this.getVisibleTodos();
 
     return (
       <div>
+        <IconButton>
+          <AddIcon style={{ width: 40, height: 40, fill: 'green' }} />
+        </IconButton>
+
         <TodoCreator onSubmit={this.addTodo} />
         <div>
           <p>General count of todos: {totalTodoCount}</p>
