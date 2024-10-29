@@ -26,8 +26,15 @@ export class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const nextTodos = this.state.todos;
+    const prevTodos = prevState.todos;
+
     if (this.state.todos !== prevState.todos) {
       localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    }
+
+    if (nextTodos.length > prevTodos.length && prevTodos.length !== 0) {
+      this.toggleModal();
     }
   }
 
@@ -43,6 +50,8 @@ export class App extends Component {
     this.setState(prevState => ({
       todos: [todo, ...prevState.todos],
     }));
+
+    // this.toggleModal();
   };
 
   deleteTodo = todoId => {
