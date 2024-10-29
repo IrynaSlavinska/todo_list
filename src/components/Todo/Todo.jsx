@@ -1,7 +1,13 @@
 import { IconButton } from 'components/IconButton';
 import { ReactComponent as DeleteIcon } from '../../icons/delete.svg';
 
-export const Todo = ({ completed, onToggleCompleted, text, onDeleteTodo }) => {
+export const Todo = ({
+  completed,
+  onToggleCompleted,
+  title,
+  text,
+  onDeleteTodo,
+}) => {
   return (
     <>
       <label>
@@ -12,9 +18,12 @@ export const Todo = ({ completed, onToggleCompleted, text, onDeleteTodo }) => {
           onChange={onToggleCompleted}
         />
       </label>
-      <p>{text}</p>
+      <div>
+        <h3>{title}</h3>
+        <p>{text}</p>
+      </div>
       <IconButton onClick={onDeleteTodo}>
-        <DeleteIcon style={{ width: 40, height: 40, fill: 'green' }} />
+        <DeleteIcon style={{ width: 24, height: 24, fill: 'green' }} />
       </IconButton>
     </>
   );
