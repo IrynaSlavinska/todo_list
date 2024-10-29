@@ -1,16 +1,18 @@
 import { Todo } from 'components/Todo';
+import { TodoGallery, TodoItem } from './TodoList.styled';
 
 export const TodoList = ({ todos, onDeleteTodo, onToggleCompleted }) => (
-  <ul>
-    {todos.map(({ id, text, completed }) => (
-      <li key={id}>
+  <TodoGallery>
+    {todos.map(({ id, title, text, completed }) => (
+      <TodoItem key={id}>
         <Todo
           completed={completed}
+          title={title}
           text={text}
           onToggleCompleted={() => onToggleCompleted(id)}
           onDeleteTodo={() => onDeleteTodo(id)}
         />
-      </li>
+      </TodoItem>
     ))}
-  </ul>
+  </TodoGallery>
 );
