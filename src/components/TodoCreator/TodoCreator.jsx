@@ -1,34 +1,57 @@
 import { Component } from 'react';
+import { Form, CreateButton } from './TodoCreator.styled';
 
 export class TodoCreator extends Component {
-  state = { message: '' };
+  state = {
+    title: '',
+    text: '',
+  };
 
-  handleChange = e => {
-    this.setState({ message: e.currentTarget.value });
+  handleChangeText = e => {
+    this.setState({ text: e.currentTarget.value });
+  };
+
+  handleChangeTitle = e => {
+    this.setState({ title: e.currentTarget.value });
   };
 
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.state.message);
+    this.props.onSubmit(this.state.title, this.state.text);
 
-    this.setState({ message: '' });
+    this.setState({ title: '', text: '' });
   };
 
   render() {
-    const { message } = this.state;
+    const { title, text } = this.state;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <label>
+          Title
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={this.handleChangeTitle}
+            required
+            maxLength={15}
+            autoFocus
+          />
+        </label>
+        <label>
+          Text
           <textarea
-            name="message"
-            value={message}
-            onChange={this.handleChange}
+            name="text"
+            value={text}
+            required
+            onChange={this.handleChangeText}
+            maxLength={60}
           ></textarea>
         </label>
-        <button type="submit">Create</button>
-      </form>
+        <CreateButton type="submit">Create</CreateButton>
+      </Form>
     );
   }
 }
