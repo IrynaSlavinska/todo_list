@@ -40,3 +40,9 @@ export const InfoContainer = styled.div`
     }
   }
 `;
+
+export const Subtitle = styled.h2`
+  font-size: 40px;
+  margin-top: 20px;
+  text-align: center;
+`;

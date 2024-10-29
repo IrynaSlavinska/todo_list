@@ -7,7 +7,7 @@ import { Modal } from 'components/Modal';
 import { IconButton } from 'components/IconButton';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
 import { ReactComponent as CloseIcon } from 'icons/close.svg';
-import { Container, Title, InfoContainer } from './App.styled';
+import { Container, Title, InfoContainer, Subtitle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -37,8 +37,8 @@ export class App extends Component {
     }));
   };
 
-  addTodo = text => {
-    const todo = { id: shortid.generate(), text, completed: false };
+  addTodo = (title, text) => {
+    const todo = { id: shortid.generate(), title, text, completed: false };
 
     this.setState(prevState => ({
       todos: [todo, ...prevState.todos],
@@ -71,8 +71,8 @@ export class App extends Component {
 
   getVisibleTodos = () => {
     const { todos, filter } = this.state;
-
     const normalizedFilter = filter.toLocaleLowerCase();
+
     return todos.filter(({ text }) =>
       text.toLocaleLowerCase().includes(normalizedFilter)
     );
@@ -108,23 +108,37 @@ export class App extends Component {
         {showModal && (
           <Modal onClose={this.toggleModal}>
             <IconButton onClick={this.toggleModal}>
-              <CloseIcon style={{ width: 40, height: 40, fill: 'green' }} />
+              <CloseIcon
+                style={{
+                  width: 20,
+                  height: 20,
+                  fill: 'var(--darkGreen)',
+                }}
+              />
             </IconButton>
             <TodoCreator onSubmit={this.addTodo} />
           </Modal>
         )}
 
-        <Filter filter={filter} changeFilter={this.changeFilter} />
+        {visibleTodos.length > 0 && (
+          <Filter filter={filter} changeFilter={this.changeFilter} />
+        )}
 
         <IconButton onClick={this.toggleModal}>
-          <AddIcon style={{ width: 40, height: 40, fill: 'green' }} />
+          <AddIcon
+            style={{ width: 40, height: 40, fill: 'var(--darkGreen)' }}
+          />
         </IconButton>
 
-        <TodoList
-          todos={visibleTodos}
-          onDeleteTodo={this.deleteTodo}
-          onToggleCompleted={this.toggleCompleted}
-        />
+        {visibleTodos.length > 0 ? (
+          <TodoList
+            todos={visibleTodos}
+            onDeleteTodo={this.deleteTodo}
+            onToggleCompleted={this.toggleCompleted}
+          />
+        ) : (
+          <Subtitle>Create your first todo</Subtitle>
+        )}
       </Container>
     );
   }
